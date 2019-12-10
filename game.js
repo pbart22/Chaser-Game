@@ -29,17 +29,17 @@ function haveCollided(sprite1, sprite2) {
 function pushOff(c1, c2) {
   if (haveCollided(c1, c2)) {
     if (c1.x + c1.width > c2.x) {
-      c1.x -= 5;
-      c2.x += 5;
+      c1.x -= 4;
+      c2.x += 4;
     } else if (c1.y + c1.height > c2.y) {
-      c1.y -= 5;
-      c2.y += 5;
+      c1.y -= 4;
+      c2.y += 4;
     } else if (c2.x + c2.width > c1.x) {
-      c1.x += 5;
-      c2.x -= 5;
+      c1.x += 4;
+      c2.x -= 4;
     } else {
-      c1.y += 5;
-      c2.y -= 5;
+      c1.y += 4;
+      c2.y -= 4;
     }
   }
 }
@@ -79,12 +79,13 @@ class Background {
     Object.assign(this, { x, y });
   }
   draw() {
+    ctx.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
     ctx.fillStyle = ctx.createPattern(this.image, "repeat");
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
   static updateBackground() {
     ++topBackground.y;
     ++normalBackground.y;
+    moveBackground();
   }
 }
 
@@ -98,13 +99,21 @@ class Sprite {
   }
 }
 
+class Scarecrow extends Sprite {
+  constructor(x, y, width, height, speed) {
+    super();
+    this.image = new Image();
+    this.image.src = "https://i.ibb.co/VQw263q/580b57fcd9996e24bc43c39c.png";
+    Object.assign(this, { x, y, width, height, speed });
+  }
+}
 
 class Dog extends Sprite {
   constructor(x, y, width, height, speed) {
     super();
     this.image = new Image();
     this.image.src =
-      "https://i.ibb.co/XFZGBzM/dog-clipart-transparent-background-7.png";
+      "https://i.ibb.co/y8QkPWY/dog-running-png-puppy-australian-cattle-dog-clipa-2b766088bc924f2c.png";
     Object.assign(this, { x, y, width, height, speed });
   }
   draw() {
@@ -116,7 +125,8 @@ class DogCatcher extends Sprite {
   constructor(x, y, width, height, speed) {
     super();
     this.image = new Image();
-    this.image.src = "https://image.ibb.co/hGFkAG/konami_Character.png";
+    this.image.src =
+      "https://i.ibb.co/92pS4vm/Pin-Clipart-com-old-dog-clip-art-1910203.png";
     Object.assign(this, { x, y, width, height, speed });
   }
   draw() {
@@ -149,10 +159,12 @@ class Treat extends Sprite {
   }
 }
 
-let topBackground = new Background(0, -500);
+let topBackground = new Background(0, -600);
 let normalBackground = new Background(0, 0);
 
 let player = new Dog(dogPositionX, dogPositionY, dogWidth, dogHeight, dogSpeed);
+
+let scarecrow = [];
 
 let enemies = [
   new DogCatcher(
@@ -174,6 +186,27 @@ let enemies = [
 let availableHearts = [];
 
 let availableTreats = [];
+
+function moveBackground() {
+  if (normalBackground.y >= 600) {
+    topBackground.y = -600;
+    normalBackground.y = 0;
+  }
+}
+
+function spawnScarecrow() {
+  if (i % 150 === 0) {
+    scarecrow.push(
+      new Scarecrow(
+        Math.random() * (500 - 150) + 150,
+        Math.random() * (500 - 100) + 100,
+        40,
+        40,
+        0
+      )
+    );
+  }
+}
 
 function spawnDogCatchers() {
   if (i % 250 === 0) {
@@ -219,8 +252,8 @@ function spawnHearts() {
   if (i % 150 === 0) {
     availableHearts.push(
       new Heart(
-        Math.random() * (470 - 150) + 150,
-        Math.random() * (470 - 100) + 100,
+        Math.random() * (500 - 150) + 150,
+        Math.random() * (500 - 100) + 100,
         40,
         40,
         0
@@ -250,8 +283,6 @@ function updateMouse(event) {
   mouse.x = event.clientX - left;
   mouse.y = event.clientY - top;
 }
-
-
 
 function dogCatcherChase(leader, follower, speed) {
   follower.x +=
@@ -327,6 +358,7 @@ function restartGame() {
 function updateScene() {
   i++;
   spawnDogCatchers();
+  spawnScarecrow();
   Background.updateBackground();
   spawnHearts();
   spawnTreats();
@@ -336,6 +368,7 @@ function updateScene() {
   enemies.forEach(catcher => {
     if (haveCollided(catcher, player)) {
       healthBar.value -= 1;
+      pushOff(player, catcher);
     }
   });
   availableTreats.forEach(treat => {
@@ -368,7 +401,6 @@ function drawScene() {
   stayInBounds();
   if (healthBar.value <= 0) {
     gameOverScreen();
-    spawnScarecrow();
   } else {
     requestAnimationFrame(drawScene);
   }
