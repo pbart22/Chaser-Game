@@ -306,7 +306,7 @@ function startScreen() {
   ctx.fillStyle = "white";
   ctx.align = "center";
   ctx.fillText(
-    "Run from the dog Catchers!",
+    "Run from the dog catchers!",
     canvas.width / 2 - 220,
     canvas.height / 2 - 50
   );
@@ -321,7 +321,7 @@ function gameOverScreen() {
   ctx.fillStyle = "white";
   ctx.align = "center";
   ctx.fillText(
-    "You have been Caught!",
+    "You have been caught!",
     canvas.width / 2 - 195,
     canvas.height / 2 - 20
   );
