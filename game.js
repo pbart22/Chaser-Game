@@ -71,6 +71,7 @@ function stayInBounds() {
   }
 }
 
+// Background Image Source:https://2.bp.blogspot.com/-3-bkBLwA_Bk/VaTNgW4XoEI/AAAAAAAAE_8/hHO-ZQz83OI/s1600/tile_grass_v01bs.png 
 class Background {
   constructor(x, y) {
     this.image = new Image();
@@ -99,6 +100,7 @@ class Sprite {
   }
 }
 
+// Scarecrow Sprite Image Source: https://www.stickpng.com/img/icons-logos-emojis/emojis/emoji-poop
 class Scarecrow extends Sprite {
   constructor(x, y, width, height, speed) {
     super();
@@ -108,6 +110,7 @@ class Scarecrow extends Sprite {
   }
 }
 
+// Dog Image Source: https://www.pngfans.com/middle-06861db0da241235-dog-running.html
 class Dog extends Sprite {
   constructor(x, y, width, height, speed) {
     super();
@@ -121,6 +124,7 @@ class Dog extends Sprite {
   }
 }
 
+ // DogCatcher Image source: https://www.pinclipart.com/pindetail/xRJxTh_dog-catcher-male-scribblenauts-police-clipart/
 class DogCatcher extends Sprite {
   constructor(x, y, width, height, speed) {
     super();
@@ -133,7 +137,7 @@ class DogCatcher extends Sprite {
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
   }
 }
-
+// Heart Image Source: https://www.stockunlimited.com/similar/2008684.html
 class Heart extends Sprite {
   constructor(x, y, width, height, speed) {
     super();
@@ -146,6 +150,7 @@ class Heart extends Sprite {
   }
 }
 
+// Treat Image Source: https://pngtree.com/freepng/pet-treat_2744410.html
 class Treat extends Sprite {
   constructor(x, y, width, height, speed) {
     super();
@@ -194,6 +199,9 @@ function moveBackground() {
   }
 }
 
+/* I unfortunately was not able to figure out how to get my scarecrow to work for this assignment, 
+ and I ran out of time to play around with it and figure it out. 
+ However I am determined to figure it out over the break. */
 function spawnScarecrow() {
   if (i % 150 === 0) {
     scarecrow.push(
